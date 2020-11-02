@@ -3,15 +3,15 @@
 #include <thread>
 #include <vector>
 
-#include "src/lib/utility.h"
+#include "utility.h"
 
 // A demo for creating two threads
 // Run this using one of the following methods:
-//  1. With bazel: bazel run src/main:main
-//  2. With plain g++: g++ -std=c++17 -lpthread src/main/main.cc  -I ./
+//  1. With cmake: mkdir build && cd build; cmake ..; make
+//  2. With plain g++: g++ -std=c++17 -pthread src/main/main.cc  -I ./src/lib
 int main() {
   const int number_of_threads = 2;
-  const int number_of_elements = 1000 * 1000 * 1000;
+  const int number_of_elements = 1000;
   const int step = number_of_elements / number_of_threads;
   std::vector<uint64_t> partial_sums(number_of_threads);
 

@@ -3,15 +3,15 @@
 #include <thread>
 #include <vector>
 
-#include "src/lib/utility.h"
+#include "utility.h"
 
-// A demo for creating two threads
+// A demo for creating a vector containing 100 threads
 // Run this using one of the following methods:
-//  1. With bazel: bazel run src/main:vector_of_threads_main
-//  2. With plain g++: g++ -std=c++17 -lpthread src/main/vector_of_threads_main.cc  -I ./
+//  1. With cmake: mkdir build && cd build; cmake ..; make
+//  2. With plain g++: g++ -std=c++17 -pthread src/main/1.vector_of_threads_main.cc  -I ./src/lib
 int main() {
-  const int number_of_threads = 1000;
-  uint64_t number_of_elements = 1000 * 1000* 1000;
+  const int number_of_threads = 100;
+  uint64_t number_of_elements = 1000* 1000;
   uint64_t step = number_of_elements / number_of_threads;
   std::vector<std::thread> threads;
   std::vector<uint64_t> partial_sums(number_of_threads);

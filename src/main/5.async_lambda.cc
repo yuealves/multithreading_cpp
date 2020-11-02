@@ -9,7 +9,7 @@
 #include <thread>
 #include <vector>
 
-#include "src/lib/utility.h"
+#include "utility.h"
 
 int main() {
   const int number_of_threads = 10;

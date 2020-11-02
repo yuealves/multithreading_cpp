@@ -1,4 +1,4 @@
-// A demo for incorrectly using shared memory without mutex and locks
+// A demo for mutex and locks
 // By Ari Saif
 // Run this using one of the following methods:
 //  1. With bazel:
@@ -7,21 +7,24 @@
 //  2. With g++:
 //      g++ -std=c++17 -lpthread \
 //      src/main/mutex/{THIS_FILE_NAME}.cc  -I ./
-
 #include <iostream>
 #include <map>
 #include <mutex>
 #include <numeric>
 #include <thread>
 #include <vector>
+#include <cassert>
 
-#include "src/lib/utility.h"
+#include "utility.h"
 
-unsigned long g_counter = 0;
+std::mutex g_mutex;
+unsigned long g_counter;
 
 void Incrementer() {
   for (size_t i = 0; i < 100; i++) {
+    g_mutex.lock();
     g_counter++;
+    g_mutex.unlock();
   }
 }
 
@@ -30,6 +33,7 @@ int main() {
   int N = 1000;
   for (int i = 0; i < N; i++) {
     g_counter = 0;
+
     std::vector<std::thread> threads;
 
     for (int i = 0; i < 100; i++) {
@@ -41,9 +45,9 @@ int main() {
     }
     // std::cout << "g_counter: " << g_counter << std::endl;
     std::cout << g_counter << ", ";
+    count[g_counter]++;
   }
   std::cout << std::endl;
-
   // Assert that we always got 100*100
   assert(count[100 * 100] == N);
 }

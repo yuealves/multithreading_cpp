@@ -5,3 +5,5 @@
 /bazel-testlogs
 /bazel-template
 /bazel-*
+build/*
+.vscode/*

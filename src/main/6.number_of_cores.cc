@@ -3,7 +3,7 @@
 #include <thread>
 #include <vector>
 
-#include "src/lib/utility.h"
+#include "utility.h"
 
 // A demo for creating two threads
 // Run this using one of the following methods:
