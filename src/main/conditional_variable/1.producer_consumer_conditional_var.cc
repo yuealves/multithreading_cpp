@@ -14,6 +14,7 @@
 #include <random>
 #include <thread>
 #include <vector>
+#include <functional>
 
 // Create a function to generate a random value between 0 and 10
 auto GenRandomValue = std::bind(std::uniform_int_distribution<>(0, 10),

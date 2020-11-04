@@ -1,4 +1,5 @@
-// A demo for shared_mutex and shared_lock
+// A demo for unique_lock: similar to lock_guard, but it can
+// be lock and unlock multiple times.
 // By Ari Saif
 // Run this using one of the following methods:
 //  1. With bazel:
@@ -9,26 +10,25 @@
 //      src/main/mutex/{THIS_FILE_NAME}.cc  -I ./
 #include <future>
 #include <iostream>
-#include <mutex>
+#include <mutex> // For std::unique_lock
 #include <numeric>
-#include <shared_mutex>
 #include <thread>
 #include <vector>
+#include <cassert>
 
-std::shared_mutex g_shared_mutex;
+#include "utility.h"
+
+std::mutex g_mutex;
 unsigned long g_counter;
 
 void Incrementer() {
   for (size_t i = 0; i < 100; i++) {
-    std::unique_lock<std::shared_mutex> ul(g_shared_mutex);
+    // unique_lock is a lock_guard plus an option to manually unlock and lock
+    std::unique_lock<std::mutex> ul(g_mutex);
     g_counter++;
-  }
-}
-
-void ImJustAReader() {
-  for (size_t i = 0; i < 100; i++) {
-    std::shared_lock<std::shared_mutex> sl(g_shared_mutex);
-    std::cout << "g_counter: " << g_counter << std::endl;
+    ul.unlock();
+    std::cout << "Doing something non-critical..." << std::endl;
+    ul.lock();
   }
 }
 
@@ -37,7 +37,6 @@ int main() {
 
   for (int i = 0; i < 100; i++) {
     threads.push_back(std::thread(Incrementer));
-    threads.push_back(std::thread(ImJustAReader));
   }
 
   for (std::thread &t : threads) {

@@ -13,6 +13,7 @@
 #include <numeric>
 #include <thread>
 #include <vector>
+#include <cassert>
 
 std::mutex g_mutex1, g_mutex2;
 unsigned long g_counter;

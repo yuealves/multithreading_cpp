@@ -7,6 +7,7 @@
 //  2. With g++:
 //      g++ -std=c++17 -lpthread \
 //      src/main/mutex/{THIS_FILE_NAME}.cc  -I ./
+#include <cassert>
 #include <future>
 #include <iostream>
 #include <mutex>
@@ -19,6 +20,10 @@ unsigned long g_counter;
 
 void Incrementer() {
   for (size_t i = 0; i < 100; i++) {
+    // Using lock_guard wrapper is better than directly using mutex, as
+    // lock_guard will automatically unlock the mutex when it is out of the
+    // scope. If an exception occurs, directly using mutex may not release the
+    // lock (the line of "mtx.unlock()" will not be executed).
     std::lock_guard<std::mutex> guard(g_mutex);
     g_counter++;
   }

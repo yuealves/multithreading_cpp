@@ -44,4 +44,6 @@ target_link_libraries(6.number_of_cores
     PRIVATE
         Threads::Threads
 )
+
 add_subdirectory(main/mutex)
+add_subdirectory(main/conditional_variable)
